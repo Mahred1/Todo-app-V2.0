@@ -1,11 +1,32 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Todo from "./components/Todo";
 
 function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [todos, setTodos] = useState([]);
+  const [requests, setRequests] = useState(0);
+
+  
+  useEffect(
+    function () {
+      const getTodos = async () => {
+        const res = await fetch("http://localhost:3000/todos", {
+          method: "GET",
+        });
+        const data = await res.json();
+        setTodos(data);
+      };
+      getTodos();
+    },
+    [requests]
+  );
+
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
+      setRequests((requests) => requests+1);
+
       const res = await fetch("http://localhost:3000/todo", {
         method: "POST",
         body: JSON.stringify({
@@ -36,6 +57,10 @@ function App() {
       />
 
       <button onClick={(e) => handleAdd(e)}>Add</button>
+
+      {todos.map((todo) => (
+        <Todo todo={todo} />
+      ))}
     </div>
   );
 }
