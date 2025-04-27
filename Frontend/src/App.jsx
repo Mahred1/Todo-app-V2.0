@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Todo from "./components/Todo";
+import MarkedTodos from "./components/MarkedTodos";
+import UnmarkedTodos from "./components/UnmarkedTodos";
 
 function App() {
   const [title, setTitle] = useState("");
@@ -7,7 +9,6 @@ function App() {
   const [todos, setTodos] = useState([]);
   const [requests, setRequests] = useState(0);
 
-  
   useEffect(
     function () {
       const getTodos = async () => {
@@ -25,7 +26,7 @@ function App() {
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      setRequests((requests) => requests+1);
+      setRequests((requests) => requests + 1);
 
       const res = await fetch("http://localhost:3000/todo", {
         method: "POST",
@@ -45,22 +46,33 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <h1>Add Your task</h1>
+    <div className="flex flex-col w-60 m-auto text-white ">
+      <h1 className="text-center font-extrabold text-[2rem] my-10">
+        Add Your task
+      </h1>
       <label>Title: </label>
-      <input name="title" onChange={(e) => setTitle(e.target.value)} />
+      <input
+        className="border w-70 h-10 mt-3 rounded-lg"
+        name="title"
+        onChange={(e) => setTitle(e.target.value)}
+      />
       <br />
       <label>Description: </label>
       <input
+        className="border w-70 h-10 mt-3 rounded-lg"
         name="description"
         onChange={(e) => setDescription(e.target.value)}
       />
 
-      <button onClick={(e) => handleAdd(e)}>Add</button>
+      <button
+        className="bg-orange-400 w-30 h-10 mt-6 rounded-l cursor-pointer"
+        onClick={(e) => handleAdd(e)}
+      >
+        Add
+      </button>
 
-      {todos.map((todo) => (
-        <Todo todo={todo} />
-      ))}
+      <MarkedTodos todos={todos}>Completed :</MarkedTodos>
+      <UnmarkedTodos todos={todos}>Un Completed :</UnmarkedTodos>
     </div>
   );
 }

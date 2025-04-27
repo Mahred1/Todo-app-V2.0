@@ -1,18 +1,5 @@
-.app {
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-}
+@import "tailwindcss";
 
-input {
-  height: 40px;
-  margin-top: 5px;
-  font-size: 1.3rem;
-  padding-left: 15px;
-}
-
-button{
-  width : 5rem;
-  padding: 8px;
-  margin-top: 20px;
+body{
+  background-color: rgb(37, 45, 69);
 }
