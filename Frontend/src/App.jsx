@@ -71,8 +71,8 @@ function App() {
         Add
       </button>
 
-      <MarkedTodos todos={todos}>Completed :</MarkedTodos>
       <UnmarkedTodos todos={todos}>Un Completed :</UnmarkedTodos>
+      <MarkedTodos todos={todos}>Completed :</MarkedTodos>
     </div>
   );
 }

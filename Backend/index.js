@@ -29,17 +29,24 @@ app.get("/todos", async (req, res) => {
 app.put("/completed", async (req, res) => {
   const id = req.headers.id;
 
- await Todo.updateOne(
+  await Todo.updateOne(
     { _id: id },
     {
       isDone: true,
     }
   );
   res.json({
-  msg: "todo marked as completed",
-});
+    msg: "todo marked as completed",
+  });
 });
 
+app.delete("/delete", async (req, res) => {
+  const id = req.headers.id;
+  await Todo.deleteOne({ _id: id });
 
+  res.json({
+    msg: "todo has been Removed",
+  });
+});
 
 app.listen(3000);
