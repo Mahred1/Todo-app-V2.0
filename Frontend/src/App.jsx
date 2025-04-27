@@ -1,35 +1,43 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("http://localhost:3000/todo", {
+        method: "POST",
+        body: JSON.stringify({
+          title: title,
+          description: description,
+        }),
+        headers: { "content-type": "application/json" },
+      });
+
+      const data = await res.json();
+
+      alert(data.msg);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      <h1>Add Your task</h1>
+      <label>Title: </label>
+      <input name="title" onChange={(e) => setTitle(e.target.value)} />
+      <br />
+      <label>Description: </label>
+      <input
+        name="description"
+        onChange={(e) => setDescription(e.target.value)}
+      />
+
+      <button onClick={(e) => handleAdd(e)}>Add</button>
+    </div>
+  );
 }
 
-export default App
+export default App;

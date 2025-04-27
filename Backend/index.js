@@ -1,12 +1,23 @@
-const express = require("express")
+const express = require("express");
+const { Todo } = require("./db");
+const cors = require("cors")
 
+const app = express();
+app.use(express.json());
+app.use(cors())
+app.post("/todo", (req, res) => {
 
-const app = express()
+  const title = req.body.title;
+  const description = req.body.description;
 
-app.post('/todos',(req,res)=>{
-    const createPayload = req.body
+  Todo.create({
+    title,
+    description,
+    isDone:false
+  })
+  res.json({
+    msg:"todo created :)"
+  })
+});
 
-    Todo
-})
-
-app.listen(3000)
+app.listen(3000);

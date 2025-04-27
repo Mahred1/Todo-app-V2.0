@@ -8,6 +8,8 @@ const todoSchema = mongoose.Schema({
     isDone:Boolean
 })
 
-const Todos = mongoose.model('Todos',todoSchema)
+const Todo = mongoose.model('Todos',todoSchema)
 
-
+module.exports ={
+    Todo
+}
