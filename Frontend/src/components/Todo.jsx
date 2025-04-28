@@ -1,7 +1,10 @@
 function Todo({ todo, onSetTodos }) {
   async function handleMark(e, id) {
     e.stopPropagation();
-
+    if(todo.isDone){
+        console.log("already marked as done")
+        return
+    }
     const res = await fetch("http://localhost:3000/completed", {
       method: "PUT",
       headers: {
