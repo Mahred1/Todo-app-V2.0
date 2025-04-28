@@ -1,9 +1,9 @@
 import { useState } from "react";
-function Todo({ todo }) {
+function Todo({ todo, onsetRequests }) {
   const [isMarked, setIsMarked] = useState(todo.isDone);
 
   async function handleMark(e) {
-    e.stopPropagation()
+    e.stopPropagation();
 
     const res = await fetch("http://localhost:3000/completed", {
       method: "PUT",
@@ -12,12 +12,13 @@ function Todo({ todo }) {
       },
     });
     const data = await res.json();
+    onsetRequests((req) => req + 1);
     setIsMarked((isMarked) => isMarked);
     alert(data.msg);
   }
 
   async function handleDelete(e) {
-    e.stopPropagation()
+    e.stopPropagation();
     const res = await fetch("http://localhost:3000/delete", {
       method: "DELETE",
       headers: {
@@ -25,6 +26,7 @@ function Todo({ todo }) {
       },
     });
     const data = await res.json();
+    onsetRequests((req) => req + 1);
     alert(data.msg);
   }
   return (

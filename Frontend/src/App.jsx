@@ -26,8 +26,6 @@ function App() {
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      setRequests((requests) => requests + 1);
-
       const res = await fetch("http://localhost:3000/todo", {
         method: "POST",
         body: JSON.stringify({
@@ -38,7 +36,9 @@ function App() {
       });
 
       const data = await res.json();
-
+      setRequests((requests) => requests + 1);
+      setTitle("");
+      setDescription("");
       alert(data.msg);
     } catch (err) {
       console.log(err);
@@ -51,14 +51,14 @@ function App() {
         Add Your task
       </h1>
       <label>Title: </label>
-      <input
+      <input value={title}
         className="border w-70 h-10 mt-3 rounded-lg"
         name="title"
         onChange={(e) => setTitle(e.target.value)}
       />
       <br />
       <label>Description: </label>
-      <input
+      <input value={description}
         className="border w-70 h-10 mt-3 rounded-lg"
         name="description"
         onChange={(e) => setDescription(e.target.value)}
@@ -71,8 +71,12 @@ function App() {
         Add
       </button>
 
-      <UnmarkedTodos todos={todos}>Un Completed :</UnmarkedTodos>
-      <MarkedTodos todos={todos}>Completed :</MarkedTodos>
+      <UnmarkedTodos todos={todos} onsetRequests={setRequests}>
+        Un Completed :
+      </UnmarkedTodos>
+      <MarkedTodos onsetRequests={setRequests} todos={todos}>
+        Completed :
+      </MarkedTodos>
     </div>
   );
 }
