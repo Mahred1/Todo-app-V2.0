@@ -7,21 +7,17 @@ function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [todos, setTodos] = useState([]);
-  const [requests, setRequests] = useState(0);
 
-  useEffect(
-    function () {
-      const getTodos = async () => {
-        const res = await fetch("http://localhost:3000/todos", {
-          method: "GET",
-        });
-        const data = await res.json();
-        setTodos(data);
-      };
-      getTodos();
-    },
-    [requests]
-  );
+  useEffect(function () {
+    async function getTodos() {
+      const res = await fetch("http://localhost:3000/todos", {
+        method: "GET",
+      });
+      const data = await res.json();
+      setTodos(data);
+    }
+    getTodos();
+  }, []);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -36,9 +32,11 @@ function App() {
       });
 
       const data = await res.json();
-      setRequests((requests) => requests + 1);
+
       setTitle("");
       setDescription("");
+      setTodos((todos) => [...todos, { title, description }]);
+
       alert(data.msg);
     } catch (err) {
       console.log(err);
@@ -51,14 +49,16 @@ function App() {
         Add Your task
       </h1>
       <label>Title: </label>
-      <input value={title}
+      <input
+        value={title}
         className="border w-70 h-10 mt-3 rounded-lg"
         name="title"
         onChange={(e) => setTitle(e.target.value)}
       />
       <br />
       <label>Description: </label>
-      <input value={description}
+      <input
+        value={description}
         className="border w-70 h-10 mt-3 rounded-lg"
         name="description"
         onChange={(e) => setDescription(e.target.value)}
@@ -71,10 +71,10 @@ function App() {
         Add
       </button>
 
-      <UnmarkedTodos todos={todos} onsetRequests={setRequests}>
+      <UnmarkedTodos todos={todos} onSetTodos={setTodos}>
         Un Completed :
       </UnmarkedTodos>
-      <MarkedTodos onsetRequests={setRequests} todos={todos}>
+      <MarkedTodos todos={todos} onSetTodos={setTodos}>
         Completed :
       </MarkedTodos>
     </div>

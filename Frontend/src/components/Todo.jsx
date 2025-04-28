@@ -1,8 +1,5 @@
-import { useState } from "react";
-function Todo({ todo, onsetRequests }) {
-  const [isMarked, setIsMarked] = useState(todo.isDone);
-
-  async function handleMark(e) {
+function Todo({ todo, onSetTodos }) {
+  async function handleMark(e, id) {
     e.stopPropagation();
 
     const res = await fetch("http://localhost:3000/completed", {
@@ -12,12 +9,15 @@ function Todo({ todo, onsetRequests }) {
       },
     });
     const data = await res.json();
-    onsetRequests((req) => req + 1);
-    setIsMarked((isMarked) => isMarked);
+    onSetTodos((todos) =>
+      todos.map((todo) =>
+        todo.id == id ? { ...todo, isDone: true } : { todo }
+      )
+    );
     alert(data.msg);
   }
 
-  async function handleDelete(e) {
+  async function handleDelete(e, id) {
     e.stopPropagation();
     const res = await fetch("http://localhost:3000/delete", {
       method: "DELETE",
@@ -26,24 +26,27 @@ function Todo({ todo, onsetRequests }) {
       },
     });
     const data = await res.json();
-    onsetRequests((req) => req + 1);
+    onSetTodos((Todos) => Todos.filter((todo) => id !== todo.id));
     alert(data.msg);
   }
   return (
     <div
       className="cursor-pointer hover:opacity-70 flex justify-between px-1 items-center"
-      onClick={(e) => handleMark(e)}
+      onClick={(e) => handleMark(e, todo.id)}
     >
       <div>
-        <h3 className={`mt-0.5 font-bold ${isMarked ? "line-through" : ""}`}>
+        <h3 className={`mt-0.5 font-bold ${todo.isDone ? "line-through" : ""}`}>
           {todo.title}
         </h3>
-        <p className={`font-light ${isMarked ? "line-through" : ""}`}>
+        <p className={`font-light ${todo.isDone ? "line-through" : ""}`}>
           {" "}
           {todo.description}
         </p>
       </div>
-      <div onClick={(e) => handleDelete(e)} className="font-bold text-red-500">
+      <div
+        onClick={(e) => handleDelete(e, todo.id)}
+        className="font-bold text-red-500"
+      >
         X
       </div>
     </div>
