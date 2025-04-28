@@ -23,6 +23,10 @@ function App() {
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
+      if(title===""||description===""){
+        alert("empty fields")
+        return
+      }
       const res = await fetch("http://localhost:3000/todo", {
         method: "POST",
         body: JSON.stringify({
