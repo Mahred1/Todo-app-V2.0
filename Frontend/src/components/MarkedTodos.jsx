@@ -8,12 +8,7 @@ function MarkedTodos({ todos, onSetTodos, children }) {
         {todos.map((todo) => {
           return (
             <li key={todo._id}>
-              {todo.isDone && (
-                <Todo
-                  onSetTodos={onSetTodos}
-                  todo={todo}
-                />
-              )}
+              {todo.isDone && <Todo onSetTodos={onSetTodos} todo={todo} />}
             </li>
           );
         })}

@@ -7,25 +7,28 @@ function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [todos, setTodos] = useState([]);
-  const [countRes,setCountRes] =useState(0)
+  const [countRes, setCountRes] = useState(0);
 
-  useEffect(function () {
-    async function getTodos() {
-      const res = await fetch("http://localhost:3000/todos", {
-        method: "GET",
-      });
-      const data = await res.json();
-      setTodos(data);
-    }
-    getTodos();
-  }, [countRes]);
+  useEffect(
+    function () {
+      async function getTodos() {
+        const res = await fetch("http://localhost:3000/todos", {
+          method: "GET",
+        });
+        const data = await res.json();
+        setTodos(data);
+      }
+      getTodos();
+    },
+    [countRes]
+  );
 
   const handleAdd = async (e) => {
     e.preventDefault();
     try {
-      if(title===""||description===""){
-        alert("empty fields")
-        return
+      if (title === "" || description === "") {
+        alert("empty fields");
+        return;
       }
       const res = await fetch("http://localhost:3000/todo", {
         method: "POST",
@@ -40,7 +43,7 @@ function App() {
 
       setTitle("");
       setDescription("");
-      setCountRes(res=>res+1)
+      setCountRes((res) => res + 1);
       alert(data.msg);
     } catch (err) {
       console.log(err);
