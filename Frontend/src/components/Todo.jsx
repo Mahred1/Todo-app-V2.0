@@ -1,20 +1,26 @@
 function Todo({ todo, onSetTodos }) {
+
+      function get(id){
+       onSetTodos((todos) =>
+      todos.map((todo) =>
+        todo._id == id ? { ...todo, isDone: true } : todo
+      )
+    );
+  }
+
   async function handleMark(e, id) {
     e.stopPropagation();
 
     const res = await fetch("http://localhost:3000/completed", {
       method: "PUT",
       headers: {
-        id: `${todo._id}`,
+        "id": `${todo._id}`,
       },
     });
     const data = await res.json();
-    onSetTodos((todos) =>
-      todos.map((todo) =>
-        todo.id == id ? { ...todo, isDone: true } : { todo }
-      )
-    );
+ 
     alert(data.msg);
+    get(id)
   }
 
   async function handleDelete(e, id) {
@@ -22,17 +28,17 @@ function Todo({ todo, onSetTodos }) {
     const res = await fetch("http://localhost:3000/delete", {
       method: "DELETE",
       headers: {
-        id: `${todo._id}`,
+        "id": `${todo._id}`,
       },
     });
     const data = await res.json();
-    onSetTodos((Todos) => Todos.filter((todo) => id !== todo.id));
+    onSetTodos((Todos) => Todos.filter((todo) => id !== todo._id));
     alert(data.msg);
   }
   return (
     <div
       className="cursor-pointer hover:opacity-70 flex justify-between px-1 items-center"
-      onClick={(e) => handleMark(e, todo.id)}
+      onClick={(e) => handleMark(e, todo._id)}
     >
       <div>
         <h3 className={`mt-0.5 font-bold ${todo.isDone ? "line-through" : ""}`}>
@@ -44,7 +50,7 @@ function Todo({ todo, onSetTodos }) {
         </p>
       </div>
       <div
-        onClick={(e) => handleDelete(e, todo.id)}
+        onClick={(e) => handleDelete(e, todo._id)}
         className="font-bold text-red-500"
       >
         X

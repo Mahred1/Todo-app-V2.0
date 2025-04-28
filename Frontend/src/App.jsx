@@ -7,6 +7,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [todos, setTodos] = useState([]);
+  const [countRes,setCountRes] =useState(0)
 
   useEffect(function () {
     async function getTodos() {
@@ -17,7 +18,7 @@ function App() {
       setTodos(data);
     }
     getTodos();
-  }, []);
+  }, [countRes]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
@@ -35,8 +36,7 @@ function App() {
 
       setTitle("");
       setDescription("");
-      setTodos((todos) => [...todos, { title, description }]);
-
+      setCountRes(res=>res+1)
       alert(data.msg);
     } catch (err) {
       console.log(err);
